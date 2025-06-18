@@ -1,7 +1,5 @@
-import { useState } from 'react'
-import CardList from './components/CardList';
-import './App.css'
-
+import CardList from "./components/CardList";
+import "./App.css";
 
 function App() {
   const pokemonNames = [
@@ -20,7 +18,7 @@ function App() {
     "Roselia",
     "Lickitung",
     "Pikachu",
-    "Starmie"
+    "Starmie",
   ];
 
   return (
@@ -28,7 +26,7 @@ function App() {
       <h1>Memory Game</h1>
       <CardList names={pokemonNames} />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
