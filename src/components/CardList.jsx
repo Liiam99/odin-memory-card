@@ -1,14 +1,23 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { shuffle } from "../utils";
 import "../styles/cardlist.css";
 
-function CardList({ names }) {
+function CardList({ names, updateScore, endGame }) {
   const [clickedCards, setClickedCards] = useState([]);
   const [imageSources, setImageSources] = useState({});
+
+  const sortedNamesString = useMemo(
+    () => names.slice().sort().join(","),
+    [names],
+  );
+  const shuffledNames = names.slice();
+  shuffle(shuffledNames);
 
   useEffect(() => {
     let ignore = false;
 
     async function fetchImages() {
+      const names = sortedNamesString.split(",");
       const imgMapper = {};
 
       const fetches = names.map((name) =>
@@ -32,21 +41,23 @@ function CardList({ names }) {
     return () => {
       ignore = true;
     };
-  }, [names]);
+  }, [sortedNamesString]);
 
   function cardClickHandler(e) {
-    const name = e.target.name;
+    const name = e.currentTarget.name;
 
     if (clickedCards.includes(name)) {
-      console.log("HKU");
+      setClickedCards([]);
+      endGame();
     } else {
-      setClickedCards([...clickedCards, e.target.name]);
+      setClickedCards([...clickedCards, name]);
+      updateScore();
     }
   }
 
   return (
     <div className="card-list">
-      {names.map((name) => (
+      {shuffledNames.map((name) => (
         <Card
           key={name}
           name={name}
